@@ -100,7 +100,9 @@ const onChange = (object, onChange, options = {}) => {
 
 			const value = isBuiltin.withMutableMethods(target) ?
 				Reflect.get(target, property) :
-				Reflect.get(target, property, receiver);
+				// HACK: `Reflect` API doesn't work with private attributes
+				target[property]
+				// Reflect.get(target, property, receiver);
 
 			return prepareValue(value, target, property);
 		},
